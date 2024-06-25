@@ -7,9 +7,10 @@
 - As a user, I can enter my savings and income, and specify a base year (e.g. 1980) and target year (e.g. 2023), so I can understand how much my savings and income in the base year are worth in the target year.
 - As a user, I can see the maximum price of a house I could afford in the target year, so I can better understand what my purchasing power would be in the target year.
 ## High Level Design
-1. Import inflation calculator and mortgage calculator.
+1. Import ~~inflation calculator~~ and mortgage calculator.
+  - The inflation calculator is very specific to the HTML of the so I will use the data from the calculator to create a new CPI table class and write my own code for the calculator.
 2. Create an object to keep everything organized. Set initial values to defaults.
-```
+``` JavaScript
 class housingData {
   constructor(){
     this._baseYear = 1980;

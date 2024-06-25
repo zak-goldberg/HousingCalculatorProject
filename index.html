@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Affordability Calculator</title>
+    <script src="./housing-calculator.js" defer></script>
+</head>
+<body>
+  <div id="title-block">
+    <h1>Bay Area (CA) Housing Affordability Calculator</h1>
+  </div>
+  <div id="intro-input-block">
+    <h2>Welcome!</h2>
+    <p>Ever wonder how much house you could afford in the Bay Area today based on how much you had saved and how much you made in a year in the past? If so, this is the calculator for you. Enter your approximate savings an income along with a base year and see what you could buy now!</p>
+    <h2>Step 1: Enter your inputs</h2>
+    <form id="input-form">
+        <label for="input-year-dropdown">Base Year:</label>
+        <select id="input-year-dropdown" class="year-dropdown">
+        </select>
+        <br>
+        <label for="savings-input" class="input-label">Savings ($):</label>
+        <input id="savings-input" type="number" value="30000">
+        <br>
+        <label for="income-input" class="input-label">Income ($/year):</label>
+        <input id="income-input" type="number" value="15000">
+    </form>
+  </div>
+  <div id="target-year-outputs">
+    <h2>Step 2: Converting to target year</h2>
+    <p>Based on what you entered in <strong>Step 1</strong>, your savings and income would be worth the below in the target year.</p>
+    <form id="target-year-form">
+        <label for="target-year-input" class="input-label">Target Year:</label>
+        <input id="target-year-input" value="2023" readonly="true" type="number"/>
+        <br>
+        <label for="savings-output" class="input-label">Savings ($):</label>
+        <input id="savings-output" type="number" readonly="true">
+        <br>
+        <label for="income-output" class="input-label">Income ($/year):</label>
+        <input id="income-output" type="number" readonly="true">
+    </form>
+  </div>
+  <div id="housing-outputs">
+    <h2>Step 3: Housing budget</h2>
+    <p>Based on the savings and income calculated in <strong>Step 2</strong>, this is the maximum house price that you could afford.</p>
+    <form id="housig-affordability-form">
+        <label for="leverage" class="input-label">Leverage (%):</label>
+        <input id="leverage" type="number" readonly="true">
+        <br>
+        <label for="max-house-price" class="input-label">Max House Price ($):</label>
+        <input id="max-house-price" type="number" readonly="true">
+    </form>
+  </div>
+</body>
+</html>
