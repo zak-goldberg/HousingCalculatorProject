@@ -179,3 +179,6 @@ const updateOutputs = () => {
 inputYear.addEventListener("change", updateOutputs);
 inputSavings.addEventListener("change", updateOutputs);
 inputIncome.addEventListener("change", updateOutputs);
+
+// Adding a new comment to test committing to a new branch
+// Another new comment
