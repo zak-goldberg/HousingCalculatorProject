@@ -39,8 +39,14 @@ class housingData {
   - **ref:** https://www.minneapolisfed.org/about-us/monetary-policy/inflation-calculator
   - The Federal Reserve Bank of Minneapolis has JS functions on the above page that I can export to convert dollars in a base year to dollars in a target year:
 2. How do you calculate the maximum price of a house that someone can afford given savings and income?
-3. How to best trigger updates to the next section? Event listeners?
+3. [CLOSED] How to best trigger updates to the next section?
+	1. Used event listeners.
 ## To-Do
+- ~~Understand how the CPI calculator script from the Fed Works~~
+- ~~See if you can change the default year in Step 1 to 1980~~
+- See if you can format the input boxes in Step 1
+	- Couldn't find an easy way to do this, leave this as a TO-DO
+- ~~Update formatting in the input boxes in Step 2~~
 - Understand how the CPI calculator script from the Fed Works
 ## Appendix
 TBD
