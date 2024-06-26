@@ -144,6 +144,8 @@ for (let dropDown of inputYearDropDowns) {
     // Set the option text and value to the year
     newOption.text = year;
     newOption.value = year;
+    // Update .selected to true for the year 1980 so this is the default value when the page is loaded
+    if (year === 1980) newOption.selected = true;
     // Add the new option to the select element
     dropDown.add(newOption);
   }
@@ -161,24 +163,37 @@ function convertToPresentUSD (baseYearValue, baseYear) {
 }
 
 // Create objects for input year savings and income form inputs
-const inputYear = document.getElementById("input-year-dropdown");
-const inputSavings = document.getElementById("savings-input");
-const inputIncome = document.getElementById("income-input");
+const inputYearElement = document.getElementById("input-year-dropdown");
+const inputSavingsElement = document.getElementById("savings-input");
+const inputIncomeElement = document.getElementById("income-input");
 
 // Create objects for target year savings and income form inputs
-const targetSavings = document.getElementById("savings-output");
-const targetIncome = document.getElementById("income-output");
+const targetSavingsElement = document.getElementById("savings-output");
+const targetIncomeElement = document.getElementById("income-output");
 
+// Function for formatting numbers to $XX.xx
+function formatAsUSD(num) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(num);
+}
+
+// TO-DO: update this so it is formatted like $XX.xx.
 // Function to update target values
 const updateOutputs = () => {
-    targetSavings.value = convertToPresentUSD(Number(inputSavings.value), Number(inputYear.value));
-    targetIncome.value = convertToPresentUSD(Number(inputIncome.value), Number(inputYear.value));
+    let inputSavingsValue = Number(inputSavingsElement.value);
+    let inputYearValue = Number(inputYearElement.value);
+    targetSavingsElement.value = convertToPresentUSD(inputSavingsValue, inputYearValue);    
+    targetSavingsElement.value = formatAsUSD(targetSavingsElement.value);
+    let inputIncomeValue = Number(inputIncomeElement.value);
+    targetIncomeElement.value = convertToPresentUSD(inputIncomeValue, inputYearValue);
+    targetIncomeElement.value = formatAsUSD(targetIncomeElement.value);
 }
 
 // Add event listeners on changes to base year, inputSavings, and inputIncome
-inputYear.addEventListener("change", updateOutputs);
-inputSavings.addEventListener("change", updateOutputs);
-inputIncome.addEventListener("change", updateOutputs);
-
-// Adding a new comment to test committing to a new branch
-// Another new comment
+inputYearElement.addEventListener("change", updateOutputs);
+inputSavingsElement.addEventListener("change", updateOutputs);
+inputIncomeElement.addEventListener("change", updateOutputs);
