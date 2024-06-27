@@ -181,26 +181,6 @@ function formatAsUSD(num) {
   }).format(num);
 }
 
-// Function to update target values
-const updateOutputs = () => {
-    let inputSavingsValue = Number(inputSavingsElement.value);
-    let inputYearValue = Number(inputYearElement.value);
-    let targetSavingsValue = convertToPresentUSD(inputSavingsValue, inputYearValue);    
-    targetSavingsElement.value = formatAsUSD(targetSavingsValue);
-    let inputIncomeValue = Number(inputIncomeElement.value);
-    let targetIncomeValue = convertToPresentUSD(inputIncomeValue, inputYearValue);
-    targetIncomeElement.value = formatAsUSD(targetIncomeValue);
-    let maxHousePriceValue = maxAffordableHousePrice(targetIncomeValue, targetSavingsValue, debtToIncomeValue);
-    maxHousePriceElement.value = formatAsUSD(maxHousePriceValue);
-}
-
-// Add event listeners on changes to base year, inputSavings, and inputIncome
-inputYearElement.addEventListener("change", updateOutputs);
-inputSavingsElement.addEventListener("change", updateOutputs);
-inputIncomeElement.addEventListener("change", updateOutputs);
-debtToIncomeElement.addEventListener("change", updateOutputs);
-interestRateElement.addEventListener("change",updateOutputs);
-
 // Get debt to income ratio
 const debtToIncomeElement = document.getElementById('dti-ratio');
 // Convert to a number and divide by 100 to make the percentage a fraction
@@ -210,6 +190,9 @@ let debtToIncomeValue = Number(debtToIncomeElement.value) / 100
 const interestRateElement = document.getElementById('int-rate');
 // Convert to a number and divide by 100 to make the percentage a fraction
 let interestRateValue = Number(interestRateElement.value) / 100
+// Hard coding a periodic interest rate assuming interestRateValue is yearly and payments are monthly
+// TO-DO: generalize this for other numbers of payments
+let periodicInterestRate = interestRateValue / 12;
 
 // Create object for max house price
 const maxHousePriceElement = document.getElementById('max-house-price');
@@ -221,10 +204,32 @@ function maxAffordableMortagePayment (income, debtToIncomeRatio) {
 }
 
 // function to calculate max house price given max mortage payment
-// MaxHouse = M/[[ I(1 + I)^N ] / [ (1 + I)^N − 1]] + downPayment
+// Loan Payment = Principal / Discount Factor
+// Discount Factor = [(1+i)^n - 1] / [i*(1+i)^n]
+// i = annual int rate / periods per year (e.g. 12 for monthly)
+// n = periods per load (e.g. 360 for 30 year, monthly loan)
+function maxAffordableHousePrice (income, savings, debtToIncomeRatio, interestRate) {
+  let onePlusPeriodicToN = Math.pow(1 + interestRate, 360);
+  let discountFactor = (interestRate * onePlusPeriodicToN) / (onePlusPeriodicToN - 1);
 // Assuming downPayment = 100% of savings
-function maxAffordableHousePrice (income, savings, debtToIncomeRatio) {
-  let onePlusInt = 1 + interestRateValue;
-  let paymentCalcHelper = (interestRateValue * Math.pow(onePlusInt, 360)) / (Math.pow(onePlusInt, 360) - 1);
-  return maxAffordableMortagePayment(income, debtToIncomeRatio) / paymentCalcHelper + savings;
+  return (maxAffordableMortagePayment(income, debtToIncomeRatio) / discountFactor) + savings;
 }
+
+// Function to update target values
+const updateOutputs = () => {
+  let inputSavingsValue = Number(inputSavingsElement.value);
+  let inputYearValue = Number(inputYearElement.value);
+  let targetSavingsValue = convertToPresentUSD(inputSavingsValue, inputYearValue);    
+  targetSavingsElement.value = formatAsUSD(targetSavingsValue);
+  let inputIncomeValue = Number(inputIncomeElement.value);
+  let targetIncomeValue = convertToPresentUSD(inputIncomeValue, inputYearValue);
+  targetIncomeElement.value = formatAsUSD(targetIncomeValue);
+  let maxHousePriceValue = maxAffordableHousePrice(targetIncomeValue, targetSavingsValue, debtToIncomeValue, periodicInterestRate);
+  maxHousePriceElement.value = formatAsUSD(maxHousePriceValue);
+}
+// Add event listeners on changes to base year, inputSavings, and inputIncome
+inputYearElement.addEventListener("change", updateOutputs);
+inputSavingsElement.addEventListener("change", updateOutputs);
+inputIncomeElement.addEventListener("change", updateOutputs);
+debtToIncomeElement.addEventListener("change", updateOutputs);
+interestRateElement.addEventListener("change",updateOutputs);
