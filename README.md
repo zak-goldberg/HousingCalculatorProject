@@ -48,5 +48,8 @@ class housingData {
 	- Couldn't find an easy way to do this, leave this as a TO-DO
 - ~~Update formatting in the input boxes in Step 2~~
 - Add error handling
+- Add styling
+- Refactor code
+- Add context about median home price in Bay Area
 ## Appendix
 TBD
