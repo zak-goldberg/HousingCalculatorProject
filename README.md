@@ -47,6 +47,6 @@ class housingData {
 - See if you can format the input boxes in Step 1
 	- Couldn't find an easy way to do this, leave this as a TO-DO
 - ~~Update formatting in the input boxes in Step 2~~
-- Understand how the CPI calculator script from the Fed Works
+- Add error handling
 ## Appendix
 TBD

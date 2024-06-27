@@ -181,19 +181,50 @@ function formatAsUSD(num) {
   }).format(num);
 }
 
-// TO-DO: update this so it is formatted like $XX.xx.
 // Function to update target values
 const updateOutputs = () => {
     let inputSavingsValue = Number(inputSavingsElement.value);
     let inputYearValue = Number(inputYearElement.value);
-    targetSavingsElement.value = convertToPresentUSD(inputSavingsValue, inputYearValue);    
-    targetSavingsElement.value = formatAsUSD(targetSavingsElement.value);
+    let targetSavingsValue = convertToPresentUSD(inputSavingsValue, inputYearValue);    
+    targetSavingsElement.value = formatAsUSD(targetSavingsValue);
     let inputIncomeValue = Number(inputIncomeElement.value);
-    targetIncomeElement.value = convertToPresentUSD(inputIncomeValue, inputYearValue);
-    targetIncomeElement.value = formatAsUSD(targetIncomeElement.value);
+    let targetIncomeValue = convertToPresentUSD(inputIncomeValue, inputYearValue);
+    targetIncomeElement.value = formatAsUSD(targetIncomeValue);
+    let maxHousePriceValue = maxAffordableHousePrice(targetIncomeValue, targetSavingsValue, debtToIncomeValue);
+    maxHousePriceElement.value = formatAsUSD(maxHousePriceValue);
 }
 
 // Add event listeners on changes to base year, inputSavings, and inputIncome
 inputYearElement.addEventListener("change", updateOutputs);
 inputSavingsElement.addEventListener("change", updateOutputs);
 inputIncomeElement.addEventListener("change", updateOutputs);
+debtToIncomeElement.addEventListener("change", updateOutputs);
+interestRateElement.addEventListener("change",updateOutputs);
+
+// Get debt to income ratio
+const debtToIncomeElement = document.getElementById('dti-ratio');
+// Convert to a number and divide by 100 to make the percentage a fraction
+let debtToIncomeValue = Number(debtToIncomeElement.value) / 100
+
+// Get interest rate
+const interestRateElement = document.getElementById('int-rate');
+// Convert to a number and divide by 100 to make the percentage a fraction
+let interestRateValue = Number(interestRateElement.value) / 100
+
+// Create object for max house price
+const maxHousePriceElement = document.getElementById('max-house-price');
+
+// function to calculate max mortgage payment given dti
+// dti should be a fraction, not a percentage
+function maxAffordableMortagePayment (income, debtToIncomeRatio) {
+  return  (income * debtToIncomeRatio) / 12;
+}
+
+// function to calculate max house price given max mortage payment
+// MaxHouse = M/[[ I(1 + I)^N ] / [ (1 + I)^N − 1]] + downPayment
+// Assuming downPayment = 100% of savings
+function maxAffordableHousePrice (income, savings, debtToIncomeRatio) {
+  let onePlusInt = 1 + interestRateValue;
+  let paymentCalcHelper = (interestRateValue * Math.pow(onePlusInt, 360)) / (Math.pow(onePlusInt, 360) - 1);
+  return maxAffordableMortagePayment(income, debtToIncomeRatio) / paymentCalcHelper + savings;
+}

@@ -44,11 +44,14 @@
     <h2>Step 3: Housing budget</h2>
     <p>Based on the savings and income calculated in <strong>Step 2</strong>, this is the maximum house price that you could afford.</p>
     <form id="housig-affordability-form">
-        <label for="leverage" class="input-label">Leverage (%):</label>
-        <input id="leverage" type="number" readonly="true">
+        <label for="dti-ratio" class="input-label">Debt to Income Ratio (%):</label>
+        <input id="dti-ratio" type="number" value="36">
+        <br>
+        <label for="int-rate" class="input-label">Interest Rate (%):</label>
+        <input id="int-rate" type="number" value="7">
         <br>
         <label for="max-house-price" class="input-label">Max House Price ($):</label>
-        <input id="max-house-price" type="number" readonly="true">
+        <input id="max-house-price" type="text" readonly="true">
     </form>
   </div>
 </body>
