@@ -171,13 +171,13 @@ const inputIncomeElement = document.getElementById("income-input");
 const targetSavingsElement = document.getElementById("savings-output");
 const targetIncomeElement = document.getElementById("income-output");
 
-// Function for formatting numbers to $XX.xx
+// Function for formatting numbers to $XX
 function formatAsUSD(num) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
   }).format(num);
 }
 
@@ -215,6 +215,13 @@ function maxAffordableHousePrice (income, savings, debtToIncomeRatio, interestRa
   return (maxAffordableMortagePayment(income, debtToIncomeRatio) / discountFactor) + savings;
 }
 
+// Update the content in the housing outputs container based on the inputs
+// Get the span objects in that container
+const sfBadNews = document.getElementById('sf-bad-news');
+const sjBadNews = document.getElementById('sj-bad-news');
+const secretMessage = document.getElementById('secret-message');
+const contextIntro = document.getElementById('context-intro');
+
 // Function to update target values
 const updateOutputs = () => {
   let inputSavingsValue = Number(inputSavingsElement.value);
@@ -226,6 +233,24 @@ const updateOutputs = () => {
   targetIncomeElement.value = formatAsUSD(targetIncomeValue);
   let maxHousePriceValue = maxAffordableHousePrice(targetIncomeValue, targetSavingsValue, debtToIncomeValue, periodicInterestRate);
   maxHousePriceElement.value = formatAsUSD(maxHousePriceValue);
+  let sjDif = 1527333 - maxHousePriceValue;
+  let sfDif = 1143333 - maxHousePriceValue;
+  if (sjDif < 0) {
+    secretMessage.innerHTML = 'Wow! You\'re rich! You could afford the median house in both the SF and SJ metro areas.';
+    sfBadNews.innerHTML = '';
+    sjBadNews.innerHTML = '';
+    contextIntro.innerHTML = '';
+  } else if (sfDif < 0) {
+    secretMessage.innerHTML = '';
+    contextIntro.innerHTML = 'Based on your inputs, you would be ';
+    sfBadNews.innerHTML = 'able to afford the median house in the SF Metro area,';
+    sjBadNews.innerHTML = ` but would be <strong>${formatAsUSD(sjDif)}</strong> short of being able to afford the median house in the SJ Metro area.`;
+  } else {
+    secretMessage.innerHTML = '';
+    contextIntro.innerHTML = 'Based on your inputs, you would be ';
+    sfBadNews.innerHTML = `would be <strong>${formatAsUSD(sfDif)}</strong> short of being able to afford the median house in the SF Metro area and`;
+    sjBadNews.innerHTML = ` <strong>${formatAsUSD(sjDif)}</strong> short of being able to afford the median house in the SJ Metro area. I guess you have to work harder! Or maybe sell your children?`;
+  }
 }
 // Add event listeners on changes to base year, inputSavings, and inputIncome
 inputYearElement.addEventListener("change", updateOutputs);
