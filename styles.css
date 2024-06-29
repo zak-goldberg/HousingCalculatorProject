@@ -1,0 +1,63 @@
+h1,
+h2,
+label,
+p {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #003262; 
+    margin: 5px;
+}
+
+body {
+    background-color: #3b7da1de;
+}
+
+.container {
+        width: 98vw;
+        padding: 2vw;
+        display: flex;
+        align-items: normal;
+        flex-direction: column;
+        outline-style: solid;
+        outline-color: #011b33;
+        outline-width: 1px;
+}
+
+#intro-block,
+#target-year-outputs {
+    background-color: #FDB515;
+}
+
+h1 {
+    font-size: clamp(16px, 7vw, 300px);
+    color: #FDB515;
+    text-shadow: 1px 1px 2px #003262;
+}
+
+h2 {
+    font-size: x-large;
+}
+
+p {
+    font-size: medium;
+}
+
+label {
+    font-style: italic;
+}
+
+form { 
+    margin: 10px;
+}
+
+#title-block {
+    display: flex;
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Berkeley_cityscape.jpg/1920px-Berkeley_cityscape.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+    width: 98vw;
+    padding: 2vw;
+    height: 40vh;
+}
