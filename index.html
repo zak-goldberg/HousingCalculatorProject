@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Housing Affordability Calculator</title>
     <script src="./housing-calculator.js" defer></script>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div id="title-block">
     <h1>Bay Area (CA) Housing Affordability Calculator</h1>
   </div>
-  <div id="intro-input-block">
+  <div id="intro-block" class="container">
     <h2>Welcome!</h2>
     <p>Ever wonder how much house you could afford in the Bay Area today based on how much you had saved and how much you made in a year in the past? If so, this is the calculator for you. Enter your approximate savings an income along with a base year and see what you could buy now!</p>
+  </div>
+  <div id="input-block" class="container">  
     <h2>Step 1: Enter your inputs</h2>
     <form id="input-form">
         <label for="input-year-dropdown">Base Year:</label>
@@ -26,7 +29,7 @@
         <input id="income-input" type="number" value="15000">
     </form>
   </div>
-  <div id="target-year-outputs">
+  <div id="target-year-outputs" class="container">
     <h2>Step 2: Converting to target year</h2>
     <p>Based on what you entered in <strong>Step 1</strong>, your savings and income would be worth the below in the target year.</p>
     <form id="target-year-form">
@@ -40,7 +43,7 @@
         <input id="income-output" type="text" readonly="true">
     </form>
   </div>
-  <div id="housing-outputs">
+  <div id="housing-outputs" class="container">
     <h2>Step 3: Housing budget</h2>
     <p>Based on the savings and income calculated in <strong>Step 2</strong>, this is the maximum house price that you could afford.</p>
     <form id="housig-affordability-form">
@@ -53,6 +56,15 @@
         <label for="max-house-price" class="input-label">Max House Price ($):</label>
         <input id="max-house-price" type="text" readonly="true">
     </form>
+    <p>According to Zillow, in April of 2024, the median house price was <strong>$1,143,333</strong> in the San Fransisco metro area and <strong>$1,527,333</strong> in the San Jose metro area. Based on your inputs, you would be <strong>$500,000</strong> short of being able to afford a house in the Bay Area.</p>
+  </div>
+  <div id="resources-block" class="container">
+    <h2>Bay Area Housing Resources</h2>
+    <ul>
+      <li><a href="https://www.sfchronicle.com/projects/real-estate/bay-area-home-prices/">SF Chronicle Bay Area Housing Statistics</a></li>
+      <li><a href="https://www.zillow.com/home-values/403105/bay-area-ca/">Zillow San Francisco-Oakland-Hayward Housing Market Overview</a></li>
+      <li><a href="https://www.zillow.com/home-values/395059/ca/">Zillow San Jose-Sunnyvale-Santa Clara Housing Market Overview</a></li>
+    </ul>
   </div>
 </body>
 </html>

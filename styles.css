@@ -1,7 +1,8 @@
 h1,
 h2,
 label,
-p {
+p,
+ul {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: #003262; 
     margin: 5px;
@@ -23,7 +24,8 @@ body {
 }
 
 #intro-block,
-#target-year-outputs {
+#target-year-outputs,
+#resources-block {
     background-color: #FDB515;
 }
 
