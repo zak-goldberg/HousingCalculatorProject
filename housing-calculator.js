@@ -1,8 +1,9 @@
-// TO-DO: figure out how to make this a module to break up this script
-// import CPITable class, this includes the CPI values for each year from 1913 to 2023
-// import {CPITable} from "./my-cpi-calculator.js";
+// TO-DO: make this a module to break up this script
+  // import CPITable class, this includes the CPI values for each year from 1913 to 2023
+  // import {CPITable} from "./my-cpi-calculator.js";
 
 // Create CPI Table class with data from Minn Fed Bank. The value for each year is the CPI value.
+// Methods to get the value for a specific year or the ratio of values between 2 years.
 
 class CPITable {
     constructor() {
@@ -183,15 +184,14 @@ function formatAsUSD(num) {
 
 // Get debt to income ratio
 const debtToIncomeElement = document.getElementById('dti-ratio');
-// Convert to a number and divide by 100 to make the percentage a fraction
-let debtToIncomeValue = Number(debtToIncomeElement.value) / 100
+
 
 // Get interest rate
 const interestRateElement = document.getElementById('int-rate');
 // Convert to a number and divide by 100 to make the percentage a fraction
 let interestRateValue = Number(interestRateElement.value) / 100
 // Hard coding a periodic interest rate assuming interestRateValue is yearly and payments are monthly
-// TO-DO: generalize this for other numbers of payments
+// TO-DO: generalize this for other numbers of payments (assumes 12 monthly payments)
 let periodicInterestRate = interestRateValue / 12;
 
 // Create object for max house price
@@ -215,8 +215,7 @@ function maxAffordableHousePrice (income, savings, debtToIncomeRatio, interestRa
   return (maxAffordableMortagePayment(income, debtToIncomeRatio) / discountFactor) + savings;
 }
 
-// Update the content in the housing outputs container based on the inputs
-// Get the span objects in that container
+// Get the objects in the context container so they can be used be the updateOutputs function.
 const sfBadNews = document.getElementById('sf-bad-news');
 const sjBadNews = document.getElementById('sj-bad-news');
 const secretMessage = document.getElementById('secret-message');
@@ -224,35 +223,49 @@ const contextIntro = document.getElementById('context-intro');
 
 // Function to update target values
 const updateOutputs = () => {
+  // Save savings, income, and year inputs as variable and convert to numbers
   let inputSavingsValue = Number(inputSavingsElement.value);
-  let inputYearValue = Number(inputYearElement.value);
-  let targetSavingsValue = convertToPresentUSD(inputSavingsValue, inputYearValue);    
-  targetSavingsElement.value = formatAsUSD(targetSavingsValue);
   let inputIncomeValue = Number(inputIncomeElement.value);
+  let inputYearValue = Number(inputYearElement.value);
+  // Convert the savings and income input to present US dollars using base year
+  let targetSavingsValue = convertToPresentUSD(inputSavingsValue, inputYearValue);    
   let targetIncomeValue = convertToPresentUSD(inputIncomeValue, inputYearValue);
+  // Assign the target savings and income values to these values. Convert to a string with $XXXX format.
+  targetSavingsElement.value = formatAsUSD(targetSavingsValue);
   targetIncomeElement.value = formatAsUSD(targetIncomeValue);
+  // Assign debt to income input to a variable, convert to a number and into a decimal from percentage.
+  let debtToIncomeValue = Number(debtToIncomeElement.value) / 100
+  // Calculate the max affordable house price based on the inputs, assuming no other taxes, expenses, etc.
   let maxHousePriceValue = maxAffordableHousePrice(targetIncomeValue, targetSavingsValue, debtToIncomeValue, periodicInterestRate);
+  // Assign to the max house price element value.
   maxHousePriceElement.value = formatAsUSD(maxHousePriceValue);
+  // Hardcoding the median house price value in April 2024. Subtracting the max house price calculated above.
   let sjDif = 1527333 - maxHousePriceValue;
   let sfDif = 1143333 - maxHousePriceValue;
+  // Checking if they can afford a house in SJ (only SJ because SF is cheaper)
   if (sjDif < 0) {
+    // Updating HTML values in the context section based on inputs
     secretMessage.innerHTML = 'Wow! You\'re rich! You could afford the median house in both the SF and SJ metro areas.';
     sfBadNews.innerHTML = '';
     sjBadNews.innerHTML = '';
     contextIntro.innerHTML = '';
+  // if they can't afford SJ but can afford SF
   } else if (sfDif < 0) {
+    // Updating HTML values in the context section based on inputs
     secretMessage.innerHTML = '';
     contextIntro.innerHTML = 'Based on your inputs, you would be ';
     sfBadNews.innerHTML = 'able to afford the median house in the SF Metro area,';
     sjBadNews.innerHTML = ` but would be <strong>${formatAsUSD(sjDif)}</strong> short of being able to afford the median house in the SJ Metro area.`;
+  // if they are unfortunate and can't afford either
   } else {
+    // Updating HTML values in the context section based on inputs
     secretMessage.innerHTML = '';
     contextIntro.innerHTML = 'Based on your inputs, you would be ';
     sfBadNews.innerHTML = `would be <strong>${formatAsUSD(sfDif)}</strong> short of being able to afford the median house in the SF Metro area and`;
     sjBadNews.innerHTML = ` <strong>${formatAsUSD(sjDif)}</strong> short of being able to afford the median house in the SJ Metro area. I guess you have to work harder! Or maybe sell your children?`;
   }
 }
-// Add event listeners on changes to base year, inputSavings, and inputIncome
+// Add event listeners on changes to base year, inputSavings, inputIncome, debtToIncome, interestRate
 inputYearElement.addEventListener("change", updateOutputs);
 inputSavingsElement.addEventListener("change", updateOutputs);
 inputIncomeElement.addEventListener("change", updateOutputs);
