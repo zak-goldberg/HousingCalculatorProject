@@ -63,3 +63,16 @@ form {
     padding: 2vw;
     height: 40vh;
 }
+
+#signature {
+    display: flex;
+    justify-content: right;
+    font-size: small;
+    color: black;
+    font-family: sans-serif;
+    padding-top: 5px;
+  }
+  
+  strong {
+    padding-left: 5px;
+  }
